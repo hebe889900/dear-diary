@@ -1,20 +1,17 @@
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 
-var autoprefixer = require('autoprefixer-core');
-var mqpacker = require('css-mqpacker');
-var csswring = require('csswring');
-
 var path = require('path');
 var http = require('http');
 var st = require('st');
+var moment = require('moment');
 
 // PostCSS
 gulp.task('css', function () {
   var processors = [
-    autoprefixer({browsers: ['last 1 version']}),
-    mqpacker,
-    csswring
+    require('autoprefixer-core')({browsers: ['last 1 version']}),
+    require('css-mqpacker'),
+    require('csswring')
   ];
 
   return gulp.src('./src/css/**/*.css')
@@ -28,17 +25,36 @@ gulp.task('css', function () {
 // Generate markup
 gulp.task('markup', function() {
   gulp.src('./node_modules/highlight.js/styles/tomorrow.css')
-    .pipe(gulp.dest('./dist/'));
+    .pipe(gulp.dest('./dist/css/'));
 
-  gulp.src('./diary/**/*.md', {
-    base: './diary'
-  }).pipe(plugins.markdown({
+  return gulp.src('./diary/**/*.md').pipe(plugins.markdown({
       highlight: function (code) {
         return require('highlight.js').highlightAuto(code).value;
       }
     }))
-    .pipe(plugins.layout({
-      layout: './src/jade/layout/diary-layout.jade'
+    .pipe(plugins.layout(function(file) {
+      var name = path.parse(file.path).name;
+      var date = moment(new Date(name));
+      
+      if (!date.isValid()) {
+        return {
+          layout: './src/jade/layout/plain-layout.jade',
+          data_lang: 'en',
+          title: name
+        }
+      } else if (name.length > 7) {   // full date
+        return {
+          layout: './src/jade/layout/diary-layout.jade',
+          data_lang: 'en',
+          title: date.format('MMMM D, YYYY')
+        }
+      } else {  // month summary
+        return {
+          layout: './src/jade/layout/month-layout.jade',
+          data_lang: 'en',
+          title: date.format('MMMM, YYYY')
+        }
+      }
     }))
     .pipe(gulp.dest('./dist/'))
     .pipe(plugins.livereload());
@@ -47,11 +63,11 @@ gulp.task('markup', function() {
 // watch
 gulp.task('watch', ['server'], function() {
   plugins.livereload.listen({ basePath: 'dist' });
-  gulp.watch(['./my-tech-diary/**/*.md', './src/jade/**/*.jade'], ['markup']);
+  gulp.watch(['./diary/**/*.md', './src/jade/**/*.jade'], ['markup']);
   gulp.watch('./src/css/**/*.css', ['css']);
 });
 
-gulp.task('build', ['diary', 'css']);
+gulp.task('build', ['markup', 'css']);
 
 // Launch server
 gulp.task('server', ['build'], function(done) {
