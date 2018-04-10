@@ -179,7 +179,7 @@ function serve(done) {
       cache: false
     })
   ).listen(8000, done);
-  console.log('Server listening on http://localhost:8000/diary/');
+  console.log('Server listening on http://localhost:8000/dear-diary/');
 }
 
 gulp.task('server', ['build-debug'], serve);

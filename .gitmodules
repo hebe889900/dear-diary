@@ -1,3 +1,3 @@
-[submodule "diary"]
+[submodule "dear-diary"]
 	path = diary
-	url = git@github.com:joyeecheung/my-tech-diary.git
+	url = git@github.com:hebe889900/my-tech-diary.git

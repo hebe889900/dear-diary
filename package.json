@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hebe889900/diary.git"
+    "url": "https://github.com/hebe889900/dear-diary.git"
   },
   "author": "hebe889900",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hebe889900/diary/issues"
+    "url": "https://github.com/hebe889900/dear-diary/issues"
   },
-  "homepage": "https://github.com/hebe889900/diary",
+  "homepage": "https://github.com/hebe889900/dear-diary",
   "devDependencies": {
     "bluebird": "^2.10.1",
     "cssnano": "^2.0.3",
