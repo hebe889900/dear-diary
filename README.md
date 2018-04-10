@@ -36,8 +36,8 @@ You can receive updates by pulling updates into your master branch, and check th
 
 ## TODO
 
-- [ ] Write a calendar to replace pikaday
-- [ ] Add "previous" and "next" button to the diary pages
+- [ ] Connect to pininterest api
+- [ ] signup and login
 
 ## LICENSE
 
