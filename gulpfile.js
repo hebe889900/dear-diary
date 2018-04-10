@@ -28,9 +28,13 @@ gulp.task('markup', function() {
     .pipe(gulp.dest('./dist/css/'));
 
   return gulp.src('./diary/**/*.md').pipe(plugins.markdown({
-      highlight: function (code) {
-        return require('highlight.js').highlightAuto(code).value;
-      }
+      highlight: function (code, lang) {
+         if (lang) {
+           return require('highlight.js').highlight(lang, code).value;
+         } else {
+           return require('highlight.js').highlightAuto(code).value;
+         }
+        }
     }))
     .pipe(plugins.layout(function(file) {
       var name = path.parse(file.path).name;
