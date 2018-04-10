@@ -1,16 +1,4 @@
-:root {
-  --textFont: Georgia, Cambria, 'Times New Roman', Times, serif;
-  --headFont: 'Trebuchet MS', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --textColor: #333;
-  --brightColor: #5C5C5C;
-  --blockBorder: 0.3rem solid var(--brightColor);
-  --lightBackground: #E0E0E0;
-  --lightBorder: 0.1rem solid #E0E0E0;
-}
-
-html {
-  font-size: 18px;
-}
+@import "variables.css";
 
 .pika-single {
   width: 20rem;
@@ -18,6 +6,12 @@ html {
   font-family: var(--headFont);
   border-top: var(--lightBorder);
   padding-top: 1rem;
+}
+
+@media (max-width: 700px) {
+  .pika-single {
+    width: 100%;
+  }
 }
 
 .pika-single button {
@@ -61,7 +55,8 @@ button.is-disabled:hover {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.5rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
   transition: all 0.2s ease-out;
 }
@@ -113,7 +108,5 @@ button.is-disabled:hover {
 }
 
 .is-today button {
-  background: var(--brightColor);
-  color: white;
-  border-radius: 100%;
+  border: 1px solid #FFB1B1;
 }
