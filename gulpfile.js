@@ -30,7 +30,7 @@ gulp.task('markup', function() {
   return gulp.src('./diary/**/*.md').pipe(plugins.markdown({
       highlight: function (code, lang) {
          if (lang) {
-           return require('highlight.js').highlight(lang, code).value;
+           return require('highlight.js').highlight(lang, code, true).value;
          } else {
            return require('highlight.js').highlightAuto(code).value;
          }
