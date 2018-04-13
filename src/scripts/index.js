@@ -6,12 +6,11 @@ window.addEventListener('load', function() {
   var calendar = document.getElementById('calendar');
   var lastDate = new Date(calendar.getAttribute('data-last-date'));
   var firstDate = new Date(calendar.getAttribute('data-first-date'));
-  lastDate = lastDate.setDate(lastDate.getDate()+1);
 
   var picker = new Pikaday({
     onSelect: function(date) {
       var time = moment(date);
-      window.location.href += time.subtract(1, "days").format('YYYY/MM/YYYY-MM-DD') + '.html';
+      window.location.href += time.add(1, "days").format('YYYY/MM/YYYY-MM-DD') + '.html';
       alert(date)
       // a bug of pikaday whose fix is still not released
     },
