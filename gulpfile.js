@@ -127,7 +127,7 @@ function layoutDiary(file) {
   } else if (name.length > 7) {   // full date
     return _.assign({}, config, {
       layout: srcPath.template + 'layout/diary-layout.jade',
-      title: date.format('MMMM D, YYYY')
+      title: date.add("days", 1).format('MMMM D, YYYY')
     });
   } else {  // month summary
     return _.assign({}, config, {
