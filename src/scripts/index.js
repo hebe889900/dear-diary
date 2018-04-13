@@ -11,7 +11,7 @@ window.addEventListener('load', function() {
     onSelect: function(date) {
       var time = moment(date);
       window.location.href += time.add(1, "days").format('YYYY/MM/YYYY-MM-DD') + '.html';
-      alert(window.location.href)
+      //alert(window.location.href)
       // a bug of pikaday whose fix is still not released
     },
     i18n: {
