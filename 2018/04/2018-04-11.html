@@ -9,69 +9,57 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
 ga('create', 'UA-63818301-1', 'auto');
-ga('send', 'pageview');</script></head><body><header class="header"><div class="index"><a href="/dear-diary/">Index</a></div><h1>April 10, 2018</h1></header><div class="content"><div class="diary"><h1 id="pure-javascript-carousel">Pure Javascript Carousel</h1>
-<p>I have interviewed a company called Founded CO and there is a interview question about designing an image carousel that loading two photo albums from web services.
-Here is the detail requirements: </p>
-<blockquote>
-<p>You will be creating a mini web app that uses React, Node &amp;
-Express. This app will consist of a backend Express
-server that will deliver a React app to be rendered in the
-browser. The app that you will be building is a simple
-image carousel that allows the user to pick between cat or
-shark photos and then cycle through those photos. An
-example of a running version of this can be seen here:
-<a href="https://founded.media/hiring/videos/cat-shark-app.mp4">https://founded.media/hiring/videos/cat-shark-app.mp4</a></p>
-</blockquote>
-<blockquote>
-<p>The Express server besides delivering whats required for React should also provide an API endpoint
-that will return one of 3 possible lists of photo URLs (please see attached lists). Your React app
-should make a request to your API endpoint to retrieve a photo list. During this request the React
-app should show a loading state. Once the photo list has been retrieved the loading state should
-dismiss and the first photo should be shown. The user should now be able to cycle through the
-photos using left and right arrow buttons. The user can use the UI to toggle between cat photos,
-shark photos, or both (when both selected they should arrive in a random order). After each
-change to the desired list the loading state should be shown just like during the initial load and a
-new request to the photo API endpoint should be made (i.e. Do not cache the photo lists).</p>
-</blockquote>
-<p>Do</p>
-<blockquote>
-<p>• Use Redux
-• Be mindful of when to use props vs. state
-• Use Webpack
-• Be RESTful
-• ES6+
-• Use JS best practices
-• Be creative</p>
-</blockquote>
-<p>Don&#39;t </p>
-<blockquote>
-<p>• Use 3rd party image carousels
-• Over think the problem there&#39;s no
-trick here</p>
-</blockquote>
-<p>Photo list:</p>
-<pre><code><span class="hljs-keyword">const</span> sharksList = [<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/sharks/11261840124_dc9ac72bbe_b.jpg',</span>
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/sharks/513197047_2f861d56cb_b.jpg',</span>
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/sharks/2989909952_b59500107e_o.jpg',</span>
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/sharks/4107884442_3baf8985f2_b.jpg',</span>
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/sharks/3822452418_ffa66da89d_o.jpg',</span>
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/sharks/3800013954_20fea3a9c9_b.jpg',</span>
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/sharks/7109693941_250fc6b246_k.jpg',</span>
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/sharks/8592704407_75c3c7ff53_h.jpg',</span>
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/sharks/14730744390_cebc28aa86_k.jpg',</span>
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/sharks/4936728723_91da549b05_b.jpg',</span>
-];
-<span class="hljs-keyword">const</span> catsList = [
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/cats/14157413946_fea785b4d6_k.jpg',</span>
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/cats/16175483119_bd7374d8a8_h.jpg',</span>
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/cats/13901304865_a444cf4d34_k.jpg',</span>
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/cats/8311701653_49ed80202c_k.jpg',</span>
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/cats/13336301695_3c06dd41cc_k.jpg',</span>
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/cats/38679744435_66279af67c_k.jpg',</span>
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/cats/6393395037_9cda69da1a_b.jpg',</span>
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/cats/6977309082_44102ddf51_b.jpg',</span>
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/cats/11477923503_bbdf86387d_b.jpg',</span>
-<span class="hljs-string">'https</span>:<span class="hljs-comment">//founded.media/hiring/photos/cats/4481336172_7f464f180d_b.jpg'</span>
-];
-</code></pre><p>I worked on that project and failed on one of the requirement: don&#39;t use 3rd party image carousels. So I decided to learn javascript oo design and design pattern to create my own image carousel from scratch (No library use, even JQuery).</p>
+ga('send', 'pageview');</script></head><body><header class="header"><div class="index"><a href="/dear-diary/">Index</a></div><h1>April 10, 2018</h1></header><div class="content"><div class="diary"><h1 id="carousel-basic-structure">Carousel basic structure</h1>
+<p>So I want to use object oriented design concept to design an image carousel which can be used by other application. 
+As an object it has to have a constructor, its private variable and config function for outside application do some basic settings. 
+Here is the detail requirements: 
+The variables I can think of for now is the photo list array that we need to load into the image carousel, the total image number, current image number, the image container, the image wrapper and the prev/next button.  And the function we need is a render function to render those html element. </p>
+<pre><code>   <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">carousel</span> (<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">this</span>.image_list = [];
+    <span class="hljs-keyword">this</span>.currentImage = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">this</span>.totalImage = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">this</span>.prev_button = <span class="hljs-keyword">this</span>.render(<span class="hljs-string">"Prev"</span>, <span class="hljs-string">"prev_button"</span>, <span class="hljs-string">"prev_button_class"</span>,<span class="hljs-string">"image_container"</span>);
+    <span class="hljs-keyword">this</span>.next_button = <span class="hljs-keyword">this</span>.render(<span class="hljs-string">"Next"</span>, <span class="hljs-string">"next_button"</span>, <span class="hljs-string">"next_button_class"</span>,<span class="hljs-string">"image_container"</span>)
+    <span class="hljs-keyword">this</span>.image_container = <span class="hljs-keyword">this</span>.render(<span class="hljs-string">""</span>, <span class="hljs-string">"image_container"</span>, <span class="hljs-string">"image_container_class"</span>,<span class="hljs-string">"root"</span>)
+    <span class="hljs-keyword">this</span>.image_slider = <span class="hljs-keyword">this</span>.render(<span class="hljs-string">""</span>, <span class="hljs-string">"image_slider"</span>, <span class="hljs-string">"image_slider_class"</span>,<span class="hljs-string">"image_container"</span>)
+    <span class="hljs-comment">// UI</span>
+        <span class="hljs-comment">//Image container</span>
+        <span class="hljs-comment">//Prev next button</span>
+        <span class="hljs-comment">//Image wrapper</span>
+
+
+    <span class="hljs-comment">//Setting</span>
+        <span class="hljs-comment">// 1. Photolist: array</span>
+        <span class="hljs-comment">// 2. Circular: true</span>
+        <span class="hljs-comment">// 3. Number show</span>
+        <span class="hljs-comment">// 4. Bullet show</span>
+
+}
+
+carousel.prototype.init = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+
+}
+
+
+
+carousel.prototype.renderDiv = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">text, id, class, parent_id</span>) </span>{
+    <span class="hljs-keyword">var</span> newDiv = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"div"</span>);
+    <span class="hljs-keyword">var</span> newContent = <span class="hljs-built_in">document</span>.createTextNode(text);
+    newDiv.appendChild(newContent);
+    newDiv.id = id;
+    <span class="hljs-keyword">var</span> currentDiv = <span class="hljs-built_in">document</span>.getElementById(parent_id);
+    <span class="hljs-built_in">document</span>.body.insertBefore(newDiv, currentDiv);
+    <span class="hljs-keyword">return</span> newDiv;
+}
+
+carousel.prototype.renderButton = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">text, id, class, parent_id</span>) </span>{
+    <span class="hljs-keyword">var</span> newButton = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"button"</span>);
+    <span class="hljs-keyword">var</span> newContent = <span class="hljs-built_in">document</span>.createTextNode(text);
+    newButton.appendChild(newContent);
+    newButton.id = id;
+    <span class="hljs-keyword">var</span> currentDiv = <span class="hljs-built_in">document</span>.getElementById(parent_id);
+    <span class="hljs-built_in">document</span>.body.insertBefore(newButton, currentDiv);    
+    <span class="hljs-keyword">return</span> newButton;
+}
+</code></pre><p>I will be working on another Java project and will be jump back to this project later.</p>
 </div></div><footer class="footer"><address class="author">Copyright &copy;<a rel="author" href="https://github.com/joyeecheung" class="author-name">Joyee Cheung</a>-<a href="https://github.com/joyeecheung/my-tech-diary" class="source-repo">Source</a></address><p>Generated by<a href="https://github.com/joyeecheung/diary" class="site-repo">Joyee Cheung&#39;s diary generator</a></p></footer></body></html>
