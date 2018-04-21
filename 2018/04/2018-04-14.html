@@ -1,0 +1,219 @@
+<!DOCTYPE html><!--[if lte IE 8]>
+<html lang="en" class="lte-ie8">
+<![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en">
+<!--<![endif]--><head><meta charset="utf-8"><title>April 14, 2018</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/dear-diary/styles/global.css"><link rel="stylesheet" href="/dear-diary/styles/tomorrow.css"><link rel="stylesheet" href="/dear-diary/styles/diary.css"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-63818301-1', 'auto');
+ga('send', 'pageview');</script></head><body><header class="header"><div class="index"><a href="/dear-diary/">Index</a></div><h1>April 14, 2018</h1></header><div class="content"><div class="diary"><p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Amazon_logo_plain.svg/320px-Amazon_logo_plain.svg.png" alt=""></p>
+<h1 id="amazon-oa-preparation-2-">Amazon OA preparation 2:</h1>
+<p> 还是这道题：给一个string，是一篇小说内容，比如&quot;Jimmy has an apple, it is on the table&quot; 再给一个exclude word list，比如 &quot;an&quot; &quot;a&quot; &quot;is&quot; &quot;the&quot;，让你给出这个string里出现频率最高的单词:
+ 解法：</p>
+<ol>
+<li>去除String里不相关的词</li>
+<li>将String里的词放入Hashmap，Key: String; Value: Frequency</li>
+<li>讲Hashmap的Key转化为List然后进行quick sort</li>
+<li>定义两个String比大小的原则（1. 先比较Frequency，2, 在比较 Lexicographical order</li>
+<li>取quick sort的最后几位值放入result list</li>
+</ol>
+<p>补充条件：</p>
+<ol>
+<li>读取的是一个String而不是一个String Array</li>
+<li>读取的String带有标点符号</li>
+<li>可以filter掉大写或者小写或者混合的无用词</li>
+</ol>
+<p>package Problems;</p>
+<p>import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;</p>
+<p>public class mostFrequentWord {
+    public static List<String> topKFrequent(String word, int k, String[] filter) {
+        String[] words = word.split(&quot;\s+&quot;);
+        Set<String> excludeSet = new HashSet<String>(Arrays.asList(filter));
+        HashMap&lt;String, Integer&gt; map= new HashMap&lt;String, Integer&gt;();
+            for (int i = 0; i &lt; words.length; i++) {
+                words[i] = words[i].replaceAll(&quot;[^\w]&quot;, &quot;&quot;);
+                if(!excludeSet.contains(words[i])) {
+                    if(map.get(words[i]) != null) {
+                        map.put(words[i], map.get(words[i]) + 1);
+                    } else {
+                        map.put(words[i], 1);
+                    }<br>                }
+            }<br>            List<String> keys = new ArrayList&lt;&gt;(map.keySet());<br>            sort(keys, 0, keys.size()-1, map);
+            List<String> result = new ArrayList&lt;&gt;();
+            for (int i = 0; i &lt; k; i ++) {
+                result.add(keys.get(keys.size() - 1 - i));
+            }
+            for (int i = 0; i &lt; result.size(); i++) {
+                System.out.println(result.get(i) + &quot;: &quot; + map.get(result.get(i)));
+            }
+            return result;
+    }</p>
+<pre><code><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-built_in">boolean</span> isGreaterThan(<span class="hljs-keyword">String</span> string1, <span class="hljs-keyword">String</span> string2, <span class="hljs-keyword">HashMap</span>&lt;<span class="hljs-keyword">String</span>, Integer&gt; <span class="hljs-built_in">map</span>) {
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">map</span>.<span class="hljs-built_in">get</span>(string1) &gt; <span class="hljs-built_in">map</span>.<span class="hljs-built_in">get</span>(string2)) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-built_in">map</span>.<span class="hljs-built_in">get</span>(string1) == <span class="hljs-built_in">map</span>.<span class="hljs-built_in">get</span>(string2)) {
+        <span class="hljs-keyword">return</span> (string1.compareTo(string2) &lt; <span class="hljs-number">0</span>);
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+}
+
+<span class="hljs-keyword">static</span> <span class="hljs-built_in">int</span> partition(List&lt;<span class="hljs-keyword">String</span>&gt; arr, <span class="hljs-built_in">int</span> low, <span class="hljs-built_in">int</span> high, <span class="hljs-keyword">HashMap</span>&lt;<span class="hljs-keyword">String</span>, Integer&gt; <span class="hljs-built_in">map</span>)
+{
+    <span class="hljs-keyword">String</span> pivot = arr.<span class="hljs-built_in">get</span>(high); 
+    <span class="hljs-built_in">int</span> i = (low-<span class="hljs-number">1</span>); <span class="hljs-comment">// index of smaller element</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> j=low; j&lt;high; j++)
+    {
+        <span class="hljs-comment">// If current element is smaller than or</span>
+        <span class="hljs-comment">// equal to pivot</span>
+        <span class="hljs-keyword">if</span> (isGreaterThan(pivot, arr.<span class="hljs-built_in">get</span>(j), <span class="hljs-built_in">map</span>))
+        {
+            i++;
+
+            <span class="hljs-comment">// swap arr[i] and arr[j]</span>
+            <span class="hljs-keyword">String</span> temp = arr.<span class="hljs-built_in">get</span>(i);
+            arr.<span class="hljs-built_in">set</span>(i, arr.<span class="hljs-built_in">get</span>(j));
+            arr.<span class="hljs-built_in">set</span>(j, temp);
+        }
+    }
+
+    <span class="hljs-comment">// swap arr[i+1] and arr[high] (or pivot)</span>
+    <span class="hljs-keyword">String</span> temp = arr.<span class="hljs-built_in">get</span>(i+<span class="hljs-number">1</span>);
+    arr.<span class="hljs-built_in">set</span>(i+<span class="hljs-number">1</span>, arr.<span class="hljs-built_in">get</span>(high));
+    arr.<span class="hljs-built_in">set</span>(high, temp);
+
+    <span class="hljs-keyword">return</span> i+<span class="hljs-number">1</span>;
+}
+
+
+<span class="hljs-comment">/* The main function that implements QuickSort()
+  arr[] --&gt; Array to be sorted,
+  low  --&gt; Starting index,
+  high  --&gt; Ending index */</span>
+<span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-built_in">sort</span>(List&lt;<span class="hljs-keyword">String</span>&gt; arr, <span class="hljs-built_in">int</span> low, <span class="hljs-built_in">int</span> high, <span class="hljs-keyword">HashMap</span>&lt;<span class="hljs-keyword">String</span>, Integer&gt; <span class="hljs-built_in">map</span>)
+{
+    <span class="hljs-keyword">if</span> (low &lt; high)
+    {
+        <span class="hljs-comment">/* pi is partitioning index, arr[pi] is 
+          now at right place */</span>
+        <span class="hljs-built_in">int</span> pi = partition(arr, low, high, <span class="hljs-built_in">map</span>);
+
+        <span class="hljs-comment">// Recursively sort elements before</span>
+        <span class="hljs-comment">// partition and after partition</span>
+        <span class="hljs-built_in">sort</span>(arr, low, pi-<span class="hljs-number">1</span>, <span class="hljs-built_in">map</span>);
+        <span class="hljs-built_in">sort</span>(arr, pi+<span class="hljs-number">1</span>, high, <span class="hljs-built_in">map</span>);
+    }
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> main(<span class="hljs-keyword">String</span> args[]) {
+    <span class="hljs-comment">// The name of the file to open.</span>
+    <span class="hljs-keyword">String</span> fileName = <span class="hljs-string">"temp"</span>;
+
+    <span class="hljs-comment">// This will reference one line at a time</span>
+    <span class="hljs-keyword">String</span> <span class="hljs-built_in">line</span> = <span class="hljs-keyword">null</span>;
+    StringBuilder testString = <span class="hljs-keyword">new</span> StringBuilder(<span class="hljs-string">""</span>);
+    <span class="hljs-keyword">try</span> {
+        <span class="hljs-comment">// FileReader reads text files in the default encoding.</span>
+        FileReader fileReader = 
+            <span class="hljs-keyword">new</span> FileReader(fileName);
+
+        <span class="hljs-comment">// Always wrap FileReader in BufferedReader.</span>
+        <span class="hljs-keyword">BufferedReader</span> bufferedReader = 
+            <span class="hljs-keyword">new</span> <span class="hljs-keyword">BufferedReader</span>(fileReader);
+
+        <span class="hljs-keyword">while</span>((<span class="hljs-built_in">line</span> = bufferedReader.readLine()) != <span class="hljs-keyword">null</span>) {
+            <span class="hljs-comment">//System.out.println(line);</span>
+            testString.<span class="hljs-built_in">append</span>(<span class="hljs-built_in">line</span>);
+        }   
+
+        <span class="hljs-comment">// Always close files.</span>
+        bufferedReader.close();         
+    }
+    <span class="hljs-keyword">catch</span>(FileNotFoundException ex) {
+        System.out.<span class="hljs-built_in">println</span>(
+            <span class="hljs-string">"Unable to open file '"</span> + 
+            fileName + <span class="hljs-string">"'"</span>);                
+    }
+    <span class="hljs-keyword">catch</span>(IOException ex) {
+        System.out.<span class="hljs-built_in">println</span>(
+            <span class="hljs-string">"Error reading file '"</span> 
+            + fileName + <span class="hljs-string">"'"</span>);                  
+        <span class="hljs-comment">// Or we could just do this: </span>
+        <span class="hljs-comment">// ex.printStackTrace();</span>
+    }
+    List&lt;<span class="hljs-keyword">String</span>&gt; logfile = <span class="hljs-keyword">new</span> ArrayList&lt;<span class="hljs-keyword">String</span>&gt; ();
+    logfile.<span class="hljs-built_in">add</span>(<span class="hljs-string">"fhie 1df8 sfds"</span>);
+    logfile.<span class="hljs-built_in">add</span>(<span class="hljs-string">"dsf 2def sees"</span>);
+    logfile.<span class="hljs-built_in">add</span>(<span class="hljs-string">"efe2 br9o fjsd"</span>);
+    logfile.<span class="hljs-built_in">add</span>(<span class="hljs-string">"asd1 awer jik9"</span>);<span class="hljs-comment">//Always use add when initialize</span>
+    List&lt;<span class="hljs-keyword">String</span>&gt; result = <span class="hljs-keyword">new</span> ArrayList&lt;<span class="hljs-keyword">String</span>&gt; ();
+    <span class="hljs-keyword">String</span>[] <span class="hljs-built_in">filter</span> = {<span class="hljs-string">"a"</span>, <span class="hljs-string">"an"</span>,<span class="hljs-string">"the"</span>, <span class="hljs-string">"for"</span>, <span class="hljs-string">"and"</span>, <span class="hljs-string">"or"</span>, <span class="hljs-string">"to"</span>, <span class="hljs-string">"will"</span>, <span class="hljs-string">"in"</span>, <span class="hljs-string">"of"</span>, <span class="hljs-string">"with"</span>, <span class="hljs-string">"on"</span>, <span class="hljs-string">"this"</span>, <span class="hljs-string">"that"</span>, <span class="hljs-string">"be"</span>, <span class="hljs-string">"you"</span>, <span class="hljs-string">"your"</span>, <span class="hljs-string">"but"</span>, <span class="hljs-string">"its"</span>,<span class="hljs-string">"can"</span>};
+    <span class="hljs-comment">//Should support filter the list in lowercase and uppercase and in mixed style;</span>
+    <span class="hljs-keyword">String</span> testString2 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">String</span>(testString);
+    topKFrequent(testString2, <span class="hljs-number">7</span>, <span class="hljs-built_in">filter</span>);
+    <span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; result.<span class="hljs-built_in">size</span>(); i++) {
+        System.out.<span class="hljs-built_in">println</span>(result.<span class="hljs-built_in">get</span>(i));
+    }
+}
+</code></pre><p>}</p>
+<p>几个注意事项：</p>
+<ol>
+<li><p>文件读取</p>
+<pre><code> <span class="hljs-keyword">String</span> fileName = <span class="hljs-string">"temp"</span>;
+
+ <span class="hljs-comment">// This will reference one line at a time</span>
+ <span class="hljs-keyword">String</span> <span class="hljs-built_in">line</span> = <span class="hljs-keyword">null</span>;
+ StringBuilder testString = <span class="hljs-keyword">new</span> StringBuilder(<span class="hljs-string">""</span>);
+ <span class="hljs-keyword">try</span> {
+     <span class="hljs-comment">// FileReader reads text files in the default encoding.</span>
+     FileReader fileReader = 
+         <span class="hljs-keyword">new</span> FileReader(fileName);
+
+     <span class="hljs-comment">// Always wrap FileReader in BufferedReader.</span>
+     <span class="hljs-keyword">BufferedReader</span> bufferedReader = 
+         <span class="hljs-keyword">new</span> <span class="hljs-keyword">BufferedReader</span>(fileReader);
+
+     <span class="hljs-keyword">while</span>((<span class="hljs-built_in">line</span> = bufferedReader.readLine()) != <span class="hljs-keyword">null</span>) {
+         <span class="hljs-comment">//System.out.println(line);</span>
+         testString.<span class="hljs-built_in">append</span>(<span class="hljs-built_in">line</span>);
+     }   
+
+     <span class="hljs-comment">// Always close files.</span>
+     bufferedReader.close();         
+ }
+ <span class="hljs-keyword">catch</span>(FileNotFoundException ex) {
+     System.out.<span class="hljs-built_in">println</span>(
+         <span class="hljs-string">"Unable to open file '"</span> + 
+         fileName + <span class="hljs-string">"'"</span>);                
+ }
+ <span class="hljs-keyword">catch</span>(IOException ex) {
+     System.out.<span class="hljs-built_in">println</span>(
+         <span class="hljs-string">"Error reading file '"</span> 
+         + fileName + <span class="hljs-string">"'"</span>);                  
+     <span class="hljs-comment">// Or we could just do this: </span>
+     <span class="hljs-comment">// ex.printStackTrace();</span>
+ }
+</code></pre></li>
+<li><p>按照空格split String</p>
+<p> String[] words = word.split(&quot;\s+&quot;);</p>
+</li>
+<li><p>Array =&gt; HashSet</p>
+<p> Set<String> excludeSet = new HashSet<String>(Arrays.asList(filter));</p>
+</li>
+<li><p>去除标点符号</p>
+<p> words[i] = words[i].replaceAll(&quot;[^\w]&quot;, &quot;&quot;);</p>
+</li>
+</ol>
+</div></div><footer class="footer"><address class="author">Copyright &copy;<a rel="author" href="https://github.com/joyeecheung" class="author-name">Joyee Cheung</a>-<a href="https://github.com/joyeecheung/my-tech-diary" class="source-repo">Source</a></address><p>Generated by<a href="https://github.com/joyeecheung/diary" class="site-repo">Joyee Cheung&#39;s diary generator</a></p></footer></body></html>
